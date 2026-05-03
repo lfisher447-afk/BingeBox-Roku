@@ -1,0 +1,6 @@
+
+public sub showToast(txt as string)
+    m.top.findNode("msg").text = txt
+    m.top.findNode("box").opacity = 1
+    ' Simulated timeout via simple wait logic or timer node (omitted for speed)
+end sub

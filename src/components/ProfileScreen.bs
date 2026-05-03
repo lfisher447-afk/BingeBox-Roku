@@ -1,0 +1,29 @@
+
+sub init()
+    m.profilesGrid = m.top.findNode("profilesGrid")
+    
+    ' Build Dummy Content
+    root = CreateObject("roSGNode", "ContentNode")
+    row = CreateObject("roSGNode", "ContentNode")
+    
+    p1 = CreateObject("roSGNode", "ContentNode")
+    p1.title = "Admin"
+    p1.hdposterurl = "pkg:/images/avatar1.png"
+    
+    p2 = CreateObject("roSGNode", "ContentNode")
+    p2.title = "Kids (Locked)"
+    p2.hdposterurl = "pkg:/images/avatar2.png"
+    
+    row.appendChild(p1)
+    row.appendChild(p2)
+    root.appendChild(row)
+    
+    m.profilesGrid.content = root
+    m.profilesGrid.observeField("itemSelected", "onProfileChosen")
+end sub
+
+sub onProfileChosen()
+    focused = m.profilesGrid.itemFocused
+    item = m.profilesGrid.content.getChild(focused[0]).getChild(focused[1])
+    m.top.selectedProfile = item.title
+end sub

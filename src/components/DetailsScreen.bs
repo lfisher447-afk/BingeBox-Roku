@@ -1,0 +1,31 @@
+
+sub init()
+    m.titleLbl = m.top.findNode("titleLbl")
+    m.descLbl = m.top.findNode("descLbl")
+    m.btnPlay = m.top.findNode("btnPlay")
+    m.btnList = m.top.findNode("btnList")
+    
+    m.btnPlay.observeField("buttonSelected", "onPlay")
+    m.btnList.observeField("buttonSelected", "onList")
+end sub
+
+public sub loadContent(item as object)
+    m.top.content = item
+    m.titleLbl.text = item.title
+    m.descLbl.text = item.description
+end sub
+
+sub onPlay()
+    m.top.actionEvent = "PLAY"
+end sub
+sub onList()
+    m.top.actionEvent = "WISHLIST"
+end sub
+
+function onKeyEvent(key as string, press as boolean) as boolean
+    if press and key = "back"
+        m.top.actionEvent = "CLOSE"
+        return true
+    end if
+    return false
+end function

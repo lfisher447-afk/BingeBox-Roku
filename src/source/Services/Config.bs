@@ -1,0 +1,18 @@
+
+namespace Services
+    class Config
+        public static function GetEnv() as object
+            return {
+                TMDB_BASE: "https://api.themoviedb.org/3",
+                TMDB_KEY: "15d2ea6d0dc1d476efbca3eba2b9bbfb",
+                VIDEO_TEST_URL: "http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8",
+                FEATURES: {
+                    EnableGodMode: true,
+                    EnableSkipIntro: true,
+                    EnableProfiles: true,
+                    BandwidthSaver: false
+                }
+            }
+        end function
+    end class
+end namespace

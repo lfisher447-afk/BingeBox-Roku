@@ -1,0 +1,4 @@
+<component name="HeroOverlay" extends="Group">
+<interface><function name="updateData"/></interface>
+<script type="text/brightscript" uri="pkg:/components/HeroOverlay.bs" />
+<children><Label id="t" font="font:LargeBoldSystemFont" translation="[90,380]" /><Label id="d" width="800" font="font:SmallSystemFont" translation="[90,450]" wrap="true" /></children></component>

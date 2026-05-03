@@ -1,0 +1,59 @@
+
+import "pkg:/source/Utils/Logger.bs"
+
+sub init()
+    m.nativeVideo = m.top.findNode("nativeVideo")
+    m.customHUD = m.top.findNode("customHUD")
+    m.vidTitle = m.top.findNode("vidTitle")
+    m.skipIntroBtn = m.top.findNode("skipIntroBtn")
+    
+    m.nativeVideo.observeField("state", "onRokuVidState")
+    m.nativeVideo.observeField("position", "onPositionUpdate")
+end sub
+
+public sub startPlayback(content as object)
+    m.vidTitle.text = content.title
+    
+    ' Construct Roku Player Object
+    vidNode = CreateObject("roSGNode", "ContentNode")
+    ' The magic trick: Roku ONLY takes explicit streams. Web embeds will crash.
+    vidNode.url = m.global.env.VIDEO_TEST_URL
+    vidNode.streamformat = "hls"
+    
+    m.nativeVideo.content = vidNode
+    m.nativeVideo.control = "play"
+    m.nativeVideo.setFocus(true)
+end sub
+
+sub onRokuVidState()
+    vidState = m.nativeVideo.state
+    Utils.Logger.Info("Player", `State changed to: ${vidState}`)
+    if vidState = "finished" or vidState = "error"
+        m.top.state = "EXIT"
+        m.nativeVideo.control = "stop"
+    end if
+end sub
+
+sub onPositionUpdate()
+    pos = m.nativeVideo.position
+    ' Feature: Skip Intro Simulator (Shows button between 30 and 45 seconds)
+    if pos > 30 and pos < 45
+        m.skipIntroBtn.visible = true
+    else
+        m.skipIntroBtn.visible = false
+    end if
+end sub
+
+function onKeyEvent(key as string, press as boolean) as boolean
+    if press then
+        if key = "back"
+            m.top.state = "EXIT"
+            m.nativeVideo.control = "stop"
+            return true
+        else if key = "up"
+            m.customHUD.visible = not m.customHUD.visible
+            return true
+        end if
+    end if
+    return false
+end function

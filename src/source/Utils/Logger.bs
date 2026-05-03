@@ -1,0 +1,13 @@
+
+namespace Utils
+    class Logger
+        public static sub Info(module as string, message as string)
+            ' Uses BrighterScript Template Strings!
+            print `[INFO] [${module}] ${message}`
+        end sub
+        
+        public static sub Error(module as string, message as string)
+            print `[ERROR] [${module}] ${message}`
+        end sub
+    end class
+end namespace

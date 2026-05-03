@@ -1,0 +1,1 @@
+public sub updateData(item): m.top.findNode("t").text = item.title : m.top.findNode("d").text = item.description : end sub

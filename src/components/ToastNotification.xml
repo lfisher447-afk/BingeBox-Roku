@@ -1,0 +1,9 @@
+<component name="ToastNotification" extends="Group">
+    <interface><function name="showToast" /></interface>
+    <script type="text/brightscript" uri="pkg:/components/ToastNotification.bs" />
+    <children>
+        <Rectangle id="box" width="400" height="80" color="0xE50914FF" opacity="0">
+            <Label id="msg" translation="[20,25]" color="0xFFFFFF" font="font:SmallBoldSystemFont" />
+        </Rectangle>
+    </children>
+</component>

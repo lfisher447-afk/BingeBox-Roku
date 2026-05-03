@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="OmegaPlayer" extends="Group">
+    <interface>
+        <function name="startPlayback" />
+        <field id="state" type="string" />
+    </interface>
+    <script type="text/brightscript" uri="pkg:/components/OmegaPlayer.bs" />
+    <children>
+        <Video id="nativeVideo" width="1920" height="1080" />
+        
+        <Group id="customHUD" visible="false">
+             <Rectangle width="1920" height="200" translation="[0,0]" color="0x000000AA" />
+             <Label id="vidTitle" font="font:LargeBoldSystemFont" translation="[90, 50]" />
+             <Button id="skipIntroBtn" text="Skip Intro" translation="[1600, 800]" visible="false" />
+        </Group>
+    </children>
+</component>

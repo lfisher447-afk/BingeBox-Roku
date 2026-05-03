@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="MainScene" extends="Scene" >
+    <children>
+        <Rectangle id="appBackground" width="1920" height="1080" color="0x0a0a0aFF" />
+
+        <!-- 1. Profiles Gate -->
+        <ProfileScreen id="profileScreen" visible="true" />
+        
+        <!-- 2. Main Dashboard Layout -->
+        <Group id="dashboardGroup" visible="false">
+             <!-- Ambient Glow -->
+             <Poster id="ambientGlow" width="1920" height="1080" opacity="0.1" loadDisplayMode="scaleToZoom" />
+             <!-- Header -->
+             <Label text="BingeBox Ω" font="font:MediumBoldSystemFont" color="0xE50914" translation="[90, 40]" />
+             <Label id="userProfileLabel" font="font:SmallSystemFont" color="0xFFFFFF" translation="[1700, 45]" />
+             
+             <HeroOverlay id="heroOverlay" translation="[0,0]" />
+             <RowList id="homeGrid" translation="[0,600]" itemComponentName="MovieCard" numRows="3" itemSize="[1920,380]" rowItemSize="[[250,380]]" rowItemSpacing="[[25,0]]" rowLabelOffset="[[90,20]]" drawFocusFeedback="false" />
+        </Group>
+
+        <!-- 3. Feature Details Overlay -->
+        <DetailsScreen id="detailsScreen" visible="false" />
+
+        <!-- 4. Video Player & Custom HUD -->
+        <OmegaPlayer id="omegaPlayer" visible="false" />
+
+        <!-- 5. Toast Notifications / Analytics Overlay -->
+        <ToastNotification id="toastManager" translation="[1400, 50]" />
+
+        <!-- Backend Workers -->
+        <DataManager id="dataManager" />
+    </children>
+</component>

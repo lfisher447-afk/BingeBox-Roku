@@ -1,0 +1,24 @@
+
+import "pkg:/source/Services/Config.bs"
+
+sub Main(args as dynamic)
+    screen = CreateObject("roSGScreen")
+    m.port = CreateObject("roMessagePort")
+    screen.setMessagePort(m.port)
+    
+    ' Inject Global Scope (Solves bs_const restrictions)
+    m.global = screen.getGlobalNode()
+    m.global.addField("env", "assocarray", false)
+    m.global.env = Services.Config.GetEnv()
+    
+    ' Launch Master Node 
+    scene = screen.CreateScene("MainScene")
+    screen.show()
+    
+    while true
+        msg = wait(0, m.port)
+        if type(msg) = "roSGScreenEvent"
+            if msg.isScreenClosed() then return
+        end if
+    end while
+end sub

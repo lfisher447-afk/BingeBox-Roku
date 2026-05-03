@@ -1,0 +1,112 @@
+
+import "pkg:/source/Utils/Logger.bs"
+
+sub init()
+    m.dashboardGroup = m.top.findNode("dashboardGroup")
+    m.profileScreen = m.top.findNode("profileScreen")
+    m.homeGrid = m.top.findNode("homeGrid")
+    m.heroOverlay = m.top.findNode("heroOverlay")
+    m.ambientGlow = m.top.findNode("ambientGlow")
+    m.detailsScreen = m.top.findNode("detailsScreen")
+    m.omegaPlayer = m.top.findNode("omegaPlayer")
+    m.toastManager = m.top.findNode("toastManager")
+    m.dataManager = m.top.findNode("dataManager")
+    m.userProfileLabel = m.top.findNode("userProfileLabel")
+    
+    ' Binders
+    m.profileScreen.observeField("selectedProfile", "onProfileSelected")
+    m.dataManager.observeField("homeContentReady", "onHomeDataRendered")
+    m.homeGrid.observeField("itemFocused", "onItemFocused")
+    m.homeGrid.observeField("itemSelected", "onItemSelected")
+    
+    m.detailsScreen.observeField("actionEvent", "onDetailsAction")
+    m.omegaPlayer.observeField("state", "onPlayerStateChange")
+    
+    m.profileScreen.setFocus(true)
+    Utils.Logger.Info("MainScene", "Roku Engine Rendered Successfully")
+end sub
+
+sub onProfileSelected()
+    profileId = m.profileScreen.selectedProfile
+    m.profileScreen.visible = false
+    m.toastManager.callFunc("showToast", "Welcome back, " + profileId)
+    
+    m.dashboardGroup.visible = true
+    m.userProfileLabel.text = "Config: " + profileId
+    
+    ' Trigger Task using BrighterScript Null Coalescing Protection
+    env = m.global.env ?? {}
+    m.dataManager.apiKey = env.TMDB_KEY
+    m.dataManager.callFunc("fetchHomeRows")
+end sub
+
+sub onHomeDataRendered()
+    if m.dataManager.homeContent <> invalid
+        m.homeGrid.content = m.dataManager.homeContent
+        m.homeGrid.setFocus(true)
+        ' Initialize Hero
+        onItemFocused()
+    else
+        m.toastManager.callFunc("showToast", "Data Failure! Check Network.")
+    end if
+end sub
+
+sub onItemFocused()
+    ' Null check array accessing using Optional Chaining (?) equivalent flow
+    focused = m.homeGrid.itemFocused
+    if focused <> invalid and focused.count() = 2
+        content = m.homeGrid.content.getChild(focused[0]).getChild(focused[1])
+        if content <> invalid
+            m.heroOverlay.callFunc("updateData", content)
+            m.ambientGlow.uri = content.hdposterurl
+        end if
+    end if
+end sub
+
+sub onItemSelected()
+    focused = m.homeGrid.itemFocused
+    content = m.homeGrid.content.getChild(focused[0]).getChild(focused[1])
+    
+    m.dashboardGroup.visible = false
+    m.detailsScreen.callFunc("loadContent", content)
+    m.detailsScreen.visible = true
+    m.detailsScreen.setFocus(true)
+end sub
+
+sub onDetailsAction()
+    action = m.detailsScreen.actionEvent
+    if action = "PLAY"
+        Utils.Logger.Info("Player", "Loading Stream...")
+        m.detailsScreen.visible = false
+        m.omegaPlayer.visible = true
+        m.omegaPlayer.callFunc("startPlayback", m.detailsScreen.content)
+        m.omegaPlayer.setFocus(true)
+    else if action = "CLOSE"
+        m.detailsScreen.visible = false
+        m.dashboardGroup.visible = true
+        m.homeGrid.setFocus(true)
+    else if action = "WISHLIST"
+        m.toastManager.callFunc("showToast", "Added to " + m.userProfileLabel.text)
+    end if
+end sub
+
+sub onPlayerStateChange()
+    state = m.omegaPlayer.state
+    if state = "EXIT"
+        m.omegaPlayer.visible = false
+        m.detailsScreen.visible = true
+        m.detailsScreen.setFocus(true)
+    end if
+end sub
+
+function onKeyEvent(key as string, press as boolean) as boolean
+    ' Master Event Routing
+    if press then
+        ' Konami Code Simulation Example
+        if key = "play" and m.dashboardGroup.visible
+            m.toastManager.callFunc("showToast", "⚡ God Mode Engaged")
+            return true
+        end if
+    end if
+    return false
+end function

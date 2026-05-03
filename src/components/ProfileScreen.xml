@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="ProfileScreen" extends="Group">
+    <interface><field id="selectedProfile" type="string" /></interface>
+    <script type="text/brightscript" uri="pkg:/components/ProfileScreen.bs" />
+    <children>
+        <Label text="Who's Watching?" font="font:LargeBoldSystemFont" translation="[700, 200]" />
+        <RowList id="profilesGrid" translation="[650, 400]" itemComponentName="ProfileCard" numRows="1" itemSize="[1920,300]" rowItemSize="[[200,200],[200,200]]" rowItemSpacing="[[50,0]]" drawFocusFeedback="false" />
+    </children>
+</component>

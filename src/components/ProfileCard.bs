@@ -1,0 +1,7 @@
+
+sub itemContentChanged()
+    m.top.findNode("avatarName").text = m.top.itemContent.title
+end sub
+sub focusChanged()
+    m.top.findNode("focusRing").visible = m.top.itemHasFocus
+end sub

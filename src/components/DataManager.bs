@@ -1,0 +1,48 @@
+
+public sub fetchHomeRows()
+    m.top.functionName = "runFetch"
+    m.top.control = "RUN"
+end sub
+
+sub runFetch()
+    ' Notice the Ternary Operator in BrighterScript
+    key = m.top.apiKey <> "" ? m.top.apiKey : "15d2ea6d0dc1d476efbca3eba2b9bbfb"
+    
+    root = CreateObject("roSGNode", "ContentNode")
+    endpoints =[
+        {name: "Trending Omega", url: "https://api.themoviedb.org/3/trending/all/week?api_key=" + key},
+        {name: "Action Packed", url: "https://api.themoviedb.org/3/discover/movie?with_genres=28&api_key=" + key},
+        {name: "God Mode Top Rated", url: "https://api.themoviedb.org/3/movie/top_rated?api_key=" + key}
+    ]
+    
+    for each ep in endpoints
+        row = CreateObject("roSGNode", "ContentNode")
+        row.title = ep.name
+        
+        req = CreateObject("roUrlTransfer")
+        req.SetCertificatesFile("common:/certs/ca-bundle.crt")
+        req.InitClientCertificates()
+        req.SetUrl(ep.url)
+        
+        resp = req.GetToString()
+        if resp <> ""
+            json = ParseJson(resp)
+            ' Null Coalescing / Optional Check Simulator
+            if json <> invalid and type(json.results) = "roArray"
+                for each item in json.results
+                    node = CreateObject("roSGNode", "ContentNode")
+                    node.title = item.title ?? item.name ?? "Unknown Title"
+                    node.description = item.overview ?? "No description available."
+                    
+                    if item.poster_path <> invalid
+                        node.hdposterurl = "https://image.tmdb.org/t/p/w500" + item.poster_path
+                    end if
+                    row.appendChild(node)
+                end for
+            end if
+        end if
+        root.appendChild(row)
+    end for
+    
+    m.top.homeContent = root
+end sub

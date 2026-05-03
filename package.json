@@ -1,0 +1,12 @@
+{
+    "name": "bingebox-omega-pro",
+    "version": "1.0.0",
+    "description": "BrighterScript Roku Application",
+    "scripts": {
+        "build": "bsc",
+        "deploy": "bsc --deploy --host YOUR_ROKU_IP --password YOUR_PASS"
+    },
+    "devDependencies": {
+        "brighterscript": "^0.65.0"
+    }
+}

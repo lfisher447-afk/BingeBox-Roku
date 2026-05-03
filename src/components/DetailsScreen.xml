@@ -1,0 +1,12 @@
+<component name="DetailsScreen" extends="Group">
+    <interface><function name="loadContent" /><field id="actionEvent" type="string" /><field id="content" type="node" /></interface>
+    <script type="text/brightscript" uri="pkg:/components/DetailsScreen.bs" />
+    <children>
+        <Rectangle width="1920" height="1080" color="0x111111FA" />
+        <Label id="titleLbl" font="font:LargeBoldSystemFont" translation="[100,100]" />
+        <Label id="descLbl" font="font:MediumSystemFont" width="1000" wrap="true" translation="[100,200]" />
+        <!-- Action Row -->
+        <Button id="btnPlay" text="▶ Start Streaming" translation="[100, 450]" minWidth="300" />
+        <Button id="btnList" text="+ Add to List" translation="[450, 450]" minWidth="300" />
+    </children>
+</component>

@@ -1,0 +1,18 @@
+
+sub itemContentChanged()
+    item = m.top.itemContent
+    if item <> invalid 
+        m.top.findNode("poster").uri = item.HDPOSTERURL
+    end if
+end sub
+sub focusChanged()
+    border = m.top.findNode("border")
+    if m.top.itemHasFocus
+        border.visible = true
+        border.opacity = 1
+        ' Simple Haptic/Audio sync feedback could go here
+    else
+        border.visible = false
+        border.opacity = 0
+    end if
+end sub

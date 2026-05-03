@@ -1,0 +1,13 @@
+{
+    "rootDir": "src",
+    "files": [
+        "manifest",
+        "source/**/*",
+        "components/**/*",
+        "images/**/*"
+    ],
+    "stagingFolderPath": "out",
+    "retainStagingFolder": true,
+    "autoImportComponentScript": true,
+    "createPackage": true
+}

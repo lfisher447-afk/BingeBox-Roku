@@ -1,0 +1,4 @@
+<component name="DataManager" extends="Task">
+    <interface><field id="apiKey" type="string" /><field id="homeContent" type="node" /><function name="fetchHomeRows" /></interface>
+    <script type="text/brightscript" uri="pkg:/components/DataManager.bs" />
+</component>
