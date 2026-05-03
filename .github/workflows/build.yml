@@ -1,0 +1,33 @@
+name: Compile BrighterScript Roku App
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch: 
+
+jobs:
+  build:
+    name: Build Roku App
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Compile to Roku BrightScript
+        run: npm run build
+
+      - name: Upload Roku ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: BingeBox_Roku_Install
+          path: out/*.zip
+          retention-days: 7
